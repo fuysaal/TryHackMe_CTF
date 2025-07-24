@@ -6,12 +6,12 @@ Date: 06, January, 2021
 Author: Dhilip Sanjay S
 
 Click Here to go to the TryHackMe room.
-Reconnaissance
+    Reconnaissance
 
     nmap is an free, open-source and powerful tool used to discover hosts and services on a computer network.
 
 Scan the box, how many ports are open?
-Answer: 6
+        Answer: 6
 Steps to Reproduce:
 
 nmap <MACHINE_IP>

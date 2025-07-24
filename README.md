@@ -25,7 +25,6 @@ Bu repo, TryHackMe platformundaki çeşitli CTF görevlerinin çözümlerini iç
 - Öncelikle ilgili CTF klasörünü seçin.
 - Adım adım açıklamaları ve görselleri takip edin.
 - Kendi ortamınızda benzer adımları deneyin.
-- Sorularınız veya katkılarınız için repo üzerinden iletişime geçebilirsiniz.
 
 
 

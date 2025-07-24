@@ -1,3 +1,5 @@
+Öncelikle bir Rustscan taraması yapıldı.Sebebi ise nmap taramasına göre biraz daha hızlı sonuç verdiği için.Rustscan ile yapılan taramada gördüğümüz portları nmap taraması yaparken detaylıca kullanabiliriz
+
 ```bash
 rustscan -a 10.10.123.74 
 
@@ -39,7 +41,7 @@ Read data files from: /usr/share/nmap
 Nmap done: 1 IP address (1 host up) scanned in 1.17 seconds
            Raw packets sent: 5 (196B) | Rcvd: 2 (84B)
 ```
-
+Rustscan çıktısına göre 80 portunun açık olduğunu ve http çalıştığını gördük sonrasında biraz daha detay için nmap taraması yapıldı.
 ---
 
 ```bash
@@ -70,4 +72,4 @@ OS and Service detection performed. Please report any incorrect results at https
 Nmap done: 1 IP address (1 host up) scanned in 15.05 seconds
 
 ```
-
+Nmap taramasında sonra elimizde çıktıyı analiz ettik ve tek hedef Website olduğunu gördük ve websiteyi ziyaret ettik.

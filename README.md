@@ -1,4 +1,4 @@
-▶TryHackMe CTF Çözümleri (Türkçe)
+▶TryHackMe CTF Çözümleri 
 
 Bu repo, TryHackMe platformundaki çeşitli CTF görevlerinin çözümlerini içermektedir. Tüm içerikler tamamen Türkçe olarak hazırlanmış ve adım adım açıklamalar ile desteklenmiştir. Amacım, hem kendim için referans oluşturmak hem de Türkiye’de siber güvenlik öğrenenlere faydalı olmak.
 

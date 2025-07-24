@@ -38,6 +38,7 @@ PORT   STATE SERVICE REASON
 Read data files from: /usr/share/nmap
 Nmap done: 1 IP address (1 host up) scanned in 1.17 seconds
            Raw packets sent: 5 (196B) | Rcvd: 2 (84B)
+```
 
 ---
 
@@ -67,3 +68,6 @@ HOP RTT      ADDRESS
 
 OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
 Nmap done: 1 IP address (1 host up) scanned in 15.05 seconds
+
+```
+

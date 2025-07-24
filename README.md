@@ -10,7 +10,7 @@ denemeler burada as.dasDas
 jlgjkljvljvljvljvljvl
 nmap -p 22
 
-'''bash
+```bash
 
 python3 -c
 python -c

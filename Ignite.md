@@ -344,4 +344,4 @@ Bu CTF deneyimi, bana siber güvenlikte keşif, analiz ve istismar süreçlerini
 
 Özellikle, zayıf kimlik bilgileri ve bilinen açıkların nasıl sistemlere erişim sağladığını görmek, güvenlik farkındalığımı artırdı. Ayrıca, gerçek ortamda reverse shell kurma ve yetki yükseltme gibi kritik adımları uygulamak, teknik yeteneklerimi geliştirdi.
 
-CTF'ler bana sadece teknik bilgi değil, aynı zamanda sabır, dikkatli gözlem ve sistematik düşünmenin önemini öğretti. Bu deneyim, gelecekte karşılaşacağım gerçek dünya siber güvenlik senaryoları için güçlü bir temel oluşturdu ve motivasyonumu artırdı
+CTF'ler bana sadece teknik bilgi değil, aynı zamanda sabır, dikkatli gözlem ve sistematik düşünmenin önemini öğretti. Bu deneyim, gelecekte karşılaşacağım gerçek dünya siber güvenlik senaryoları için güçlü bir temel oluşturdu ve motivasyonumu artırdı.

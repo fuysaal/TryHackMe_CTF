@@ -214,7 +214,8 @@ ftp>
 ```
 sonrasında private.asc olan anahtarımızı john aracığıyla kırmak için değiştirdk ve şifreyi kırdık ve şifeli olan gpg dosyaısnı açmayı başarıdk 
 
-<img width="1920" height="1014" alt="privjohn" src="https://github.com/user-attachments/assets/b4c27f36-e93f-4da6-8ad5-b551ec79c522" />
+<img width="1803" height="901" alt="root" src="https://github.com/user-attachments/assets/f4a619e0-22ef-486b-a35d-7dd79c8bdea0" />
+
 
 backup içerisinden çıkan shadow dosyasını kaydettik ve localimize ftp servisi sayesinden /etc/passwd dosyasınıda çektik.
 
@@ -241,8 +242,8 @@ sonrasında bu kir.txt dosyasına johna verdik ve şifreyi kırmasını bekledik
 ```bash
 john kir.txt
 ```
+<img width="710" height="209" alt="ssh" src="https://github.com/user-attachments/assets/b3764d1b-ae78-4d2e-afe3-d454dbd4ca67" />
 
-<img width="1920" height="1014" alt="Screenshot_2025-07-29_09_58_46" src="https://github.com/user-attachments/assets/e1232a00-f137-4bd1-8366-a69b127282fa" />
 
 john ile şifremizi kırıdktan sonra ssh servisi ile root kullanıcısıyla sisteme erişiöm sağladık ve kök bayrağımızı aldık
 

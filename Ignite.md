@@ -335,3 +335,13 @@ root@ubuntu:~#
 ```
 Son olarak, sistemdeki tüm bayrakları (flags) toplayarak CTF görevini başarıyla tamamladık.
 Bu aşama, elde ettiğimiz erişimlerin ve yaptığımız keşiflerin doğrulanması açısından önemlidir.
+
+---
+
+Sonuç ve Öğrendiklerim
+
+Bu CTF deneyimi, bana siber güvenlikte keşif, analiz ve istismar süreçlerinin nasıl adım adım ilerlediğini somut olarak gösterdi. Rustscan ile hızlı port taramasından, Nmap ile detaylı servis keşfine; web uygulaması incelemesinden zafiyet araştırmasına ve exploit kullanmaya kadar geniş bir yelpazede pratik yapma fırsatı buldum.
+
+Özellikle, zayıf kimlik bilgileri ve bilinen açıkların nasıl sistemlere erişim sağladığını görmek, güvenlik farkındalığımı artırdı. Ayrıca, gerçek ortamda reverse shell kurma ve yetki yükseltme gibi kritik adımları uygulamak, teknik yeteneklerimi geliştirdi.
+
+CTF'ler bana sadece teknik bilgi değil, aynı zamanda sabır, dikkatli gözlem ve sistematik düşünmenin önemini öğretti. Bu deneyim, gelecekte karşılaşacağım gerçek dünya siber güvenlik senaryoları için güçlü bir temel oluşturdu ve motivasyonumu artırdı
